@@ -1,0 +1,92 @@
+Building a bookstore application using springboot,spring cloud and docker
+github: https://github.com/sivaprasadreddy/spring-boot-microservices-course
+    Todo
+Build Catalog service, Order service, Notification service
+Api gateway: delegate request to one of the services
+    Security
+OAuth2
+    Identity provider
+Keycloak
+    Event brooker
+RabbitMQ
+    Deployed on Kubernetes
+This deployment platform does not need Eureka server cos the service spring clouds provide is also on kubernetes.
+Eureka server is a loadbalancer
+In Kubernetes, there is a service that already provides the load balancing concept.
+    Spring boot Microservices
+    -Introduction to microservices Architecture
+Microservices is architectural style where large applications are composed of small services
+that provide specific business capabilities that can be deployed and managed independently.
+    -Monoliths vs MicroServices - Pros & Cons
+Monoliths architecture pros and cons
+    pros                                    cons
+Simpler development                         Difficult to scale sub-systems(modules)
+Easier testing and debugging                Difficult to adopt new technologies
+Simpler Deployment                          Higher chance to become big ball of mud
+MicroServices architecture aka distributed computing solves all the problems of Monoliths architecture.
+If you need a simple application, do not use distributed computing.
+because every architecture comes with its own pros and cons
+MicroServices pros and cons
+    pros                                        Cons
+can scale individual service                    Difficult to build & Manage distributed systems
+smaller code bases                              Difficult to test & Debug
+Easy to adopt new technologies if needed        Complex deployment process, performance issues
+
+    Why rabitmq and not kafka
+We use technology based off of the team strength.
+Only one service is consuming our event, so our application doesn't need kafka like functionality.
+
+    Spring cloud config
+We use spring cloud modules to build micro services in spring boot.
+One of them is spring cloud config
+Instead of using application.properties, we can put all our application configuration in a central location(repository) and we can use spring cloud config modules.
+So when we start the application, it will talk to the repository and fetch all the configuration.
+    Service registry
+Spring cloud supports Service registry like eureka, consul etc
+The concept is we do not run one instance of a service in production, we run multiple instances.
+If the client want to talk to any of the services, they will talk through the service registry(eureka server)
+So if any of the service is down and the client calls a service, eureka server will automatically bring any one that is up.
+    Kubernetes
+This has a similar feature of the service registry.
+In Kubernetes, each services run as a pod
+If you run a service, Kubernetes will automatically serve as a load balancer.
+since we are running on kubernetes, there's no reason to use a service registry.
+    SDKMAN
+This helps you install and switch between java versions
+
+Todo 2
+    create a catalog-service project with the following dependencies
+Spring Web: for building restful apis
+Validation: for bean validation
+Spring Data JPA:
+PostgreSQL Driver
+Flyway Migration: for database migration
+Spring Boot Actuator: for monitoring
+Prometheus: for monitoring
+Testcontainers: for testing
+Spring Boot DevTools
+Spring Configuration Processor
+
+Add catalog service as a module to the root project
+In TestcontainersConfiguration change the postgres from latest to 16-alpine
+
+Run TestCatalogServiceApplication and do "docker ps" to see the postgres image running
+then go to: http://localhost:8081/actuator, to see the actuator endpoints
+then go to the application.yml in catalog-service to expose all the end points of actuator with "management:endpoints:web:exposure:include: *"
+Add this two to catalog-service pom.xml "<goal>build-info</goal> & <plugin><groupId>pl.project13.maven</groupId><artifactId>git-commit-id-plugin</artifactId></plugin>"
+In the sidebar, click maven and run the package folder to see git.properties
+in the application.yml, add   Management:info:git: mode: full
+then go to http://localhost:8081/actuator/info to see the git information in git.properties file
+    Configure code formatting, swagger
+go to https://springdoc.org/
+For the integration between spring-boot and swagger-ui, add the library to the list of your project dependencies (No additional configuration is needed).
+"   <dependency>
+       <groupId>org.springdoc</groupId>
+       <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+       <version>2.8.17</version>
+    </dependency>
+"
+-Setup Docker Compose for Local Development
+-Setup Cl using Github actions
+
+
