@@ -86,7 +86,20 @@ For the integration between spring-boot and swagger-ui, add the library to the l
        <version>2.8.17</version>
     </dependency>
 "
--Setup Docker Compose for Local Development
+The Swagger UI page will then be available at http://localhost:8081/swagger-ui.html
+and the OpenAPI description will be available at the following url for json format: http://localhost:8081/v3/api-docs
+    Formatting
+The spotless plugin checks weda the code is properly formatted, and it has allows the use of different formatters.
+Open the Maven tool window (usually on the right side).
+Expand your project.
+Expand Plugins.
+Expand spotless.
+Double-click spotless:apply.
+run CatalogServiceApplicationTests
+
+IntelliJ will run it using its bundled Maven.
+
+-Setup Docker Compose for Local Development:
 -Setup Cl using Github actions
 
 
