@@ -55,7 +55,7 @@ since we are running on kubernetes, there's no reason to use a service registry.
 This helps you install and switch between java versions
 
 Todo 2
-    create a catalog-service project with the following dependencies
+    -create a catalog-service project with the following dependencies
 Spring Web: for building restful apis
 Validation: for bean validation
 Spring Data JPA:
@@ -77,7 +77,7 @@ Add this two to catalog-service pom.xml "<goal>build-info</goal> & <plugin><grou
 In the sidebar, click maven and run the package folder to see git.properties
 in the application.yml, add   Management:info:git: mode: full
 then go to http://localhost:8081/actuator/info to see the git information in git.properties file
-    Configure code formatting, swagger
+    -Configure code formatting, swagger
 go to https://springdoc.org/
 For the integration between spring-boot and swagger-ui, add the library to the list of your project dependencies (No additional configuration is needed).
 "   <dependency>
@@ -89,17 +89,50 @@ For the integration between spring-boot and swagger-ui, add the library to the l
 The Swagger UI page will then be available at http://localhost:8081/swagger-ui.html
 and the OpenAPI description will be available at the following url for json format: http://localhost:8081/v3/api-docs
     Formatting
-The spotless plugin checks weda the code is properly formatted, and it has allows the use of different formatters.
+The spotless plugin checks weda the code is properly formatted, and it allows the use of different formatters to format our code.
+if the code is not formatted, the build will fail, the solution is to
 Open the Maven tool window (usually on the right side).
 Expand your project.
 Expand Plugins.
 Expand spotless.
 Double-click spotless:apply.
-run CatalogServiceApplicationTests
-
+rebuild the project and you will see no errors
+or
+run ./mvnw spotless:apply
+you can also do ls to see if mvnw is available.
 IntelliJ will run it using its bundled Maven.
 
--Setup Docker Compose for Local Development:
--Setup Cl using Github actions
+    -Setup Docker Compose for Local Development:
+create a deployment directory inside the parent directory.
+create a docker-compose directory in the deployment.
+create an infra.yml file inside docker-compose directory.
+define the database properties in the application.yml of catalog-service.
+then we should be able to start the catalog service.
+in the terminal, we cd into deployment/docker-compose container
+then we run "docker-compose -f infra.yml up -d"
+to start the catalog-service container on docker
+we view the running container using Portainer
+    Portainer(optional)
+Docker is the engine that actually creates and runs containers.
+Portainer is just a graphical dashboard for Docker.
+that is docker commands in ui form
+eg "docker ps": show me only running containers but in Portainer we just see the containers with the tag running.
+More docker commands
+docker ps -a: Show all containers.
+docker images: Show downloaded images.
+docker logs <container-name>: Show a container's logs.
+docker stop <container-name>: Stop a running container.
+docker start <container-name>: Start a stopped container.
+
+Run CatalogServiceApplication and test the end points
+
+    -Setup Cl using Github actions
+In Github actions, When you commit your code, you can trigger build and define what you want to do within the build.
+create a github folder inside the parent element,
+create a workflows folder inside the github folder
+create a catalog-service.yml
+This catalog-service.yml will only run when changes are made to the catalog-service..
+so from our root project, we should be able to run "./mvnw -ntp verify" in the terminal.
+now we can commit our code
 
 
