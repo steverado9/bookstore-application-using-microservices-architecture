@@ -7,7 +7,7 @@ Api gateway: delegate request to one of the services
 OAuth2
     Identity provider
 Keycloak
-    Event brooker
+    Event broker
 RabbitMQ
     Deployed on Kubernetes
 This deployment platform does not need Eureka server cos the service spring clouds provide is also on kubernetes.
@@ -15,7 +15,7 @@ Eureka server is a loadbalancer
 In Kubernetes, there is a service that already provides the load balancing concept.
     Spring boot Microservices
     -Introduction to microservices Architecture
-Microservices is architectural style where large applications are composed of small services
+Microservices is an architectural style where large applications are composed of small services
 that provide specific business capabilities that can be deployed and managed independently.
     -Monoliths vs MicroServices - Pros & Cons
 Monoliths architecture pros and cons
@@ -45,7 +45,7 @@ So when we start the application, it will talk to the repository and fetch all t
 Spring cloud supports Service registry like eureka, consul etc
 The concept is we do not run one instance of a service in production, we run multiple instances.
 If the client want to talk to any of the services, they will talk through the service registry(eureka server)
-So if any of the service is down and the client calls a service, eureka server will automatically bring any one that is up.
+So if any of the service is down and the client calls a service, eureka server will automatically bring anyone that is up.
     Kubernetes
 This has a similar feature of the service registry.
 In Kubernetes, each services run as a pod
@@ -132,7 +132,56 @@ create a github folder inside the parent element,
 create a workflows folder inside the github folder
 create a catalog-service.yml
 This catalog-service.yml will only run when changes are made to the catalog-service..
-so from our root project, we should be able to run "./mvnw -ntp verify" in the terminal.
+so from our root project, we should be able to run "./mvnw -ntp verify" in the terminal, it i used to verify if our code is healthy after building.
 now we can commit our code
+improvement
+if our code is not perfectly formatted, the build will fail
+and if run "./mvnw -ntp verify" to check if everything is okay
+i.e sometimes we have to do multiple steps before we push the code
+sometimes we cannot remember all the steps or we are too lazy to do them,
+we use a utility/tool called Taskfile.dev and when we run it, it will execute all the steps we have given it to do for us.
+How to use Task
+-install it "winget install Task.Task" since i already have winget on my system
+-run task --version to see if it has installed.
+create a Taskfile.yml file
+then run task on the terminal to run general command
+more commands
+task start_infra
+task stop_infra
 
+    Todo 3
+-Code Organization: Package by layer vs Feature
+Usual standard
+Controller -> Service -> Repository -> DB
+    Package By Layer                    Package By Feature
+root                                    root
+    -Controllers                            -products
+        -ProductControllers                     -ProductController
+        -CustomerController                     -ProductService
+    -Services                                   -ProductRepository
+        -ProductService                      -Customers
+        -CustomersService                       -CustomerController
+    -repositories                               -CustomerService
+        -ProductRepository                      -CustomerRepository
+        -CustomerRepository
+
+-Implement Get Products API with Pagination
+*Create flyway migration  scripts for creating products table and populating books data.
+We use flyway for database migration and we are going to create migration script in catalog-service/resources/db/migration V1__create_products_table.sql
+and static books data in V2__add_books_data.sql
+this is the naming convention for flyway migration.
+we use task start_infra to automatically start the database using docker compose.
+run the CatalogServiceApplication
+open DBeaver and check for the flyway_schema_history.
+note:once a script is applied, do not make changes.
+if you want to make changes, you will have to add another migration script.
+
+*Make default pagesize configuration with a default value of 10
+*Implement Get/api/products?page=1 Get all products
+create ProductController class inside web/controller folder
+*Implement API integration test using RestAssured and Testcontainers.
+
+-Implement Get Product  By Code API
+-Implement Database Migrations using Flyway
+-Write Unit & Integration Tests Using Testcontainers
 
