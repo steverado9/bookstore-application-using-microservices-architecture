@@ -1,5 +1,6 @@
 package com.steverado9.catalog_service;
 
+import com.steverado9.catalog.CatalogServiceApplication;
 import org.springframework.boot.SpringApplication;
 
 public class TestCatalogServiceApplication {

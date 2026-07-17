@@ -166,7 +166,7 @@ root                                    root
         -CustomerRepository
 
 -Implement Get Products API with Pagination
-*Create flyway migration  scripts for creating products table and populating books data.
+*Create flyway migration scripts for creating products table and populating books data.
 We use flyway for database migration and we are going to create migration script in catalog-service/resources/db/migration V1__create_products_table.sql
 and static books data in V2__add_books_data.sql
 this is the naming convention for flyway migration.
@@ -176,12 +176,21 @@ open DBeaver and check for the flyway_schema_history.
 note:once a script is applied, do not make changes.
 if you want to make changes, you will have to add another migration script.
 
-*Make default pagesize configuration with a default value of 10
 *Implement Get/api/products?page=1 Get all products
 create ProductController class inside web/controller folder
+and the request is going to accept a page request parameter
+Service layer is annotated with @Transactional and it is considered as transactional boundary.
+That is you invoke a database transaction anytime you invoke a service method.
+create productEntity, productController, productRepository, productService
+whenever you are using pagination, always apply how to sort.
+We should not be exposing our entities to the front end.
+we dont need to make ProductController public cos nobody is accessing it, it is just being called from the url.
+The only classes we make public are the ones that are shared across packages.
+
+*Make default pagesize configuration with a default value of 10
+go to http://localhost:8081/api/products?page=1
+
 *Implement API integration test using RestAssured and Testcontainers.
-
--Implement Get Product  By Code API
--Implement Database Migrations using Flyway
--Write Unit & Integration Tests Using Testcontainers
-
+You can test a particular class, that is you can test only the controller, service or repository without loading the other classes.
+CatalogServiceApplicationTests: This tests weather our application can be started.
+To write an integration test, create an abstract integration text inside test folder
