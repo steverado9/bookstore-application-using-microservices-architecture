@@ -1,4 +1,4 @@
-package com.steverado9.catalog;
+package com.steverado9.catalog_service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

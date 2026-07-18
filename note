@@ -132,7 +132,7 @@ create a github folder inside the parent element,
 create a workflows folder inside the github folder
 create a catalog-service.yml
 This catalog-service.yml will only run when changes are made to the catalog-service..
-so from our root project, we should be able to run "./mvnw -ntp verify" in the terminal, it i used to verify if our code is healthy after building.
+so from our root project, we should be able to run "./mvnw -ntp verify" in the terminal, it is used to verify if our code is healthy after building.
 now we can commit our code
 improvement
 if our code is not perfectly formatted, the build will fail
@@ -192,5 +192,30 @@ go to http://localhost:8081/api/products?page=1
 
 *Implement API integration test using RestAssured and Testcontainers.
 You can test a particular class, that is you can test only the controller, service or repository without loading the other classes.
-CatalogServiceApplicationTests: This tests weather our application can be started.
 To write an integration test, create an abstract integration text inside test folder
+when we write an integration test,
+the idea is to load all the components and make an api endpoint call and verify the response.
+This is where we can use springboot eth annotation
+The eth springBoot annotation is used to write an integration text which will load the entire application
+we can use eth data jpa to test only the repository.
+for education pure
+we will write an integration test and a unit test for repository as well.
+we already have a default test which is "CatalogServiceApplicationTests"
+CatalogServiceApplicationTests: This tests weather our application can be started.
+Instead of writing this annotation '@Import(TestcontainersConfiguration.class) @SpringBootTest' for every integration test,
+Lets create a base class(AbstractIT) AbstractIntegrationTest
+By default springBoot test starts at a specific port but it is advised to use a random port.
+@LocalServerPort: This will bind the random port to the "port" variable.
+Then we extend the AbsractIT in the CatalogServiceApplicationTests.
+then we run "CatalogServiceApplicationTests".
+then we create our ProductControllerTest to test only our controller.
+When testing the controller always make sure our data is in a known state, like know the amount of data.
+we create a test-data.sql in the test resources folder.
+annotate the ProductControllerTest with @Sql and add our test-data.sql
+The annotation will load the sql script before execute the method in the ProductControllerTest
+    For unit test
+How do we test a repository
+We will test with postgres dataBase
+since we are using test containers
+    Get product by code api endpoint
+create a findByCode in ProductRepository.

@@ -1,4 +1,4 @@
-package com.steverado9.catalog.domain;
+package com.steverado9.catalog_service.domain;
 
 class ProductMapper {
 
@@ -8,7 +8,6 @@ class ProductMapper {
                 productEntity.getName(),
                 productEntity.getDescription(),
                 productEntity.getImageUrl(),
-                productEntity.getPrice()
-        );
+                productEntity.getPrice());
     }
 }

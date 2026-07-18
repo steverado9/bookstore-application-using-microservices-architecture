@@ -1,12 +1,14 @@
-package com.steverado9.catalog.domain;
+package com.steverado9.catalog_service.domain;
 
-import com.steverado9.catalog.ApplicationProperties;
+import com.steverado9.catalog_service.ApplicationProperties;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -24,8 +26,7 @@ public class ProductService {
         Sort sort = Sort.by("name").ascending();
         pageNo = pageNo <= 1 ? 0 : pageNo - 1;
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
-        Page<Product> productPage = productRepository.findAll(pageable)
-                .map(ProductMapper::toProduct);
+        Page<Product> productPage = productRepository.findAll(pageable).map(ProductMapper::toProduct);
 
         return new PagedResult<>(
                 productPage.getContent(),
@@ -35,7 +36,10 @@ public class ProductService {
                 productPage.isFirst(),
                 productPage.isLast(),
                 productPage.hasNext(),
-                productPage.hasPrevious()
-        );
+                productPage.hasPrevious());
+    }
+
+    public Optional<Product> getProductByCode(String code) {
+        return productRepository.findByCode(code).map(ProductMapper::toProduct);
     }
 }
