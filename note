@@ -218,4 +218,30 @@ How do we test a repository
 We will test with postgres dataBase
 since we are using test containers
     Get product by code api endpoint
-create a findByCode in ProductRepository.
+create a findByCode in ProductRepository
+    How to handle the exception if we put an invalid code/product not found
+Handling an exception and throwing an exception are not the same thing.
+We can create a global exception handler to handle the errors
+article on global exception handling : https://www.sivalabs.in/blog/spring-boot-3-error-reporting-using-problem-details
+It is advisable to add a generic handling exception even if you have a specific error handling exception.
+    Testing the repository for Get product by code(unit test)
+We create a test for "Get product by code" in ProductRepositoryTest
+    Testing the Controller
+We create a unit test for ProductController in ProductControllerTest
+note: for integration test, use @SpringBootTest annotation: because it is going to load the entire application.
+for unit test like repository test, use @DataJpaTest: This going to load partial component i.e only the repository.
+
+Todo 3
+How to dockerize our catalog-service application
+    -Configure spring boot mavin plugin to create docker image with name steverado9/bookstore-catalog-service
+If you want to build a docker image in springBoot, you dont need to create a docker file cos
+Behind the scene springBoot uses Cloud mavin Buildpacks to build docker image.
+go to the pom.xml of catalog-service
+go to <properties> and add <dockerImageName>
+then configure the springBoot mavin plugin
+then open the terminal and run: ./mvnw  -pl catalog-service spring-boot:build-image -DskipTests
+    -Create Dockerhub access token
+create an account on dockerhub
+after login in, go to personal access token
+-Configure Dockerhub credentials as secret Github Repository
+-Update Github Actions to build docker image and push it to Dockerhub
