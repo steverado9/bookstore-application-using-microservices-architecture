@@ -29,7 +29,7 @@
     <properties>
         <java.version>17</java.version>
         <spotless-maven-plugin.version>3.0.0</spotless-maven-plugin.version>
-        <dockerImageName>steverado/bookstore-${project.artifactId}</dockerImageName>
+        <dockerImageName>steverado9/bookstore-${project.artifactId}</dockerImageName>
     </properties>
     <dependencies>
         <dependency>

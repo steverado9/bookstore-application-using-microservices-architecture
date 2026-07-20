@@ -23,7 +23,6 @@ Monoliths architecture pros and cons
 Simpler development                         Difficult to scale sub-systems(modules)
 Easier testing and debugging                Difficult to adopt new technologies
 Simpler Deployment                          Higher chance to become big ball of mud
-MicroServices architecture aka distributed computing solves all the problems of Monoliths architecture.
 If you need a simple application, do not use distributed computing.
 because every architecture comes with its own pros and cons
 MicroServices pros and cons
@@ -195,13 +194,13 @@ You can test a particular class, that is you can test only the controller, servi
 To write an integration test, create an abstract integration text inside test folder
 when we write an integration test,
 the idea is to load all the components and make an api endpoint call and verify the response.
-This is where we can use springboot eth annotation
-The eth springBoot annotation is used to write an integration text which will load the entire application
-we can use eth data jpa to test only the repository.
-for education pure
+This is where we can use springboot @ annotation
+The @springBoot annotation is used to write an integration test which will load the entire application
+we can use @dataJpa to test only the repository.
+for education purpose
 we will write an integration test and a unit test for repository as well.
 we already have a default test which is "CatalogServiceApplicationTests"
-CatalogServiceApplicationTests: This tests weather our application can be started.
+CatalogServiceApplicationTests: This tests wether our application can be started.
 Instead of writing this annotation '@Import(TestcontainersConfiguration.class) @SpringBootTest' for every integration test,
 Lets create a base class(AbstractIT) AbstractIntegrationTest
 By default springBoot test starts at a specific port but it is advised to use a random port.
@@ -231,7 +230,7 @@ We create a unit test for ProductController in ProductControllerTest
 note: for integration test, use @SpringBootTest annotation: because it is going to load the entire application.
 for unit test like repository test, use @DataJpaTest: This going to load partial component i.e only the repository.
 
-Todo 3
+Todo 4
 How to dockerize our catalog-service application
     -Configure spring boot mavin plugin to create docker image with name steverado9/bookstore-catalog-service
 If you want to build a docker image in springBoot, you dont need to create a docker file cos
@@ -243,5 +242,32 @@ then open the terminal and run: ./mvnw  -pl catalog-service spring-boot:build-im
     -Create Dockerhub access token
 create an account on dockerhub
 after login in, go to personal access token
+click on generate new access token
+Description: DockerHubAccessToken
+Permission: Read, Write
+Then click generate
+Copy the access token : <DOCKER_ACCESS_TOKEN>
+Then we go to our code repository on github
+click on settings
+click on secrets and variables, then actions
+In Repository secrets,
+Add DOCKERHUB_USERNAME, DOCKERHUB_TOKEN
+There is a github login-action call "https://github.com/docker/login-action", we use it to login into our docker account.
+Then we go into our catalog-service.yml in github/workflow folder
+and paste this " -name: Login to Docker Hub uses: docker/login-action@v4 with: username: ${{ vars.DOCKERHUB_USERNAME }} password: ${{ secrets.DOCKERHUB_TOKEN }}"
+Then we will build docker-image and push it to dockerhub
+still in our catalog-service.yml
+Note: We should only do login to docker-hub and build, publish docker images when it is merged to the main branch on github.
+
+before pushing, lets build docker image locally and see if everything is working
+so in our deployment/docker-compose folder
+we go to the apps.yml
+now we are both running database and catalog-service in docker container
+we have to connect it in our catalog-service application.yml
+We overwrite the values for DB_URL, DB_USERNAME and DB_PASSWORD in the application.yml from the apps.yml
+In our Task.yml file we will add configuration for apps.yml (shortcut to run it)
+the run "task start" to start the catalog_db(postgres database) and catalog-service(application) containers.
+You will see the two containers started and you can access the urls in the controller eg "http://localhost:8081/api/products/P110"
+
 -Configure Dockerhub credentials as secret Github Repository
 -Update Github Actions to build docker image and push it to Dockerhub
