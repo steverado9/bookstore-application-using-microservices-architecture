@@ -268,6 +268,24 @@ We overwrite the values for DB_URL, DB_USERNAME and DB_PASSWORD in the applicati
 In our Task.yml file we will add configuration for apps.yml (shortcut to run it)
 the run "task start" to start the catalog_db(postgres database) and catalog-service(application) containers.
 You will see the two containers started and you can access the urls in the controller eg "http://localhost:8081/api/products/P110"
-
+When you push the repo to github, github action is triggered and a repository is created on dockerHub.
 -Configure Dockerhub credentials as secret Github Repository
 -Update Github Actions to build docker image and push it to Dockerhub
+
+    Todo 5
+    Order Service Setup
+Create a new springBoot microService with the name "order-service" and add the following features
+-Add dependencies Web, Validation, Spring Data JPA, Flyway, PostgresSQL, SPring for RabbitMQ, Resillience4J, Actuator,
+Prometheus, DevTools, Configuration Processor, TestContainers.
+-Add order-service in the pom.xml of the root parent as a module.
+-Add springdoc-openapi dependency
+-Add rest-assured dependency
+-Add git-commit-id-maven-plugin
+-Add spotless-maven-plugin
+-Add PostgresSQL and RabbitMQ to deployment/docker-compose/infra.yml
+-Add Github Action workflow for order-service
+-Create Flyway Migration scripts for creating orders and order_items tables
+-Configure spring-boot-maven-plugin to create a docker image with the name steverado9/bookstore-order-service
+    Understanding RabbitMQ Messaging Patterns
+    Configure Spring RabbitMQ Integration
+
